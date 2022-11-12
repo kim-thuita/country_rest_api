@@ -1,6 +1,7 @@
-import 'package:country_rest_api/post.dart';
-import 'package:country_rest_api/remote_services.dart';
-import 'package:country_rest_api/second_page.dart';
+import 'package:untitled/remote_services.dart';
+import 'package:untitled/second_screen.dart';
+
+import 'post.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
@@ -117,31 +118,62 @@ class _FirstPageState extends State<FirstPage> {
                   scrollDirection: Axis.vertical,
                   itemCount: countries.toString().length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SecondPage(),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: ListTile(
-                          leading: Container(
-                            height: 40.0,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(countries![index]
-                                        .flags!
-                                        .png
-                                        .toString()))),
-                          ),
-                          title:
-                              Text(countries![index].name!.official.toString()),
+                    String timezone = '';
+                    for (int i = 0;
+                        i < countries![index].timezones!.length;
+                        i++) {
+                      timezone =
+                          timezone + countries![index].timezones![i] + '';
+                    }
+                    return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SecondPage(
+                                name:
+                                    countries![index].name!.official.toString(),
+                                subregion:
+                                    countries![index].subregion.toString(),
+                                zone: timezone,
+                                flag: countries![index].flags?.png.toString(),
+                                population:
+                                    countries![index].population!.toString(),
+                                region: countries![index].region!.toString(),
+                                capital: countries![index].capital.toString(),
+                                religion: countries![index]
+                                    .name!
+                                    .nativeName
+                                    .toString(),
+                                language:
+                                    countries![index].name!.common.toString(),
+                                group: countries![index].subregion.toString(),
+                                currency: countries![index]
+                                    .currencies!
+                                    .bBD
+                                    .toString(),
+                                government: countries![index].cca2.toString(),
+                                area: countries![index].area.toString(),
+                                code: countries![index].idd!.root.toString(),
+                                side: countries![0].car?.side.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        leading: Container(
+                          height: 40.0,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(countries![index]
+                                      .flags!
+                                      .png
+                                      .toString()))),
                         ),
+                        title:
+                            Text(countries![index].name!.official.toString()),
                       ),
                     );
                   }),
@@ -155,4 +187,5 @@ class _FirstPageState extends State<FirstPage> {
     );
   }
 }
+
 
