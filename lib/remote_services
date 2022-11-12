@@ -1,0 +1,19 @@
+import 'package:country_rest_api/post.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Remote {
+  Future<List<CountryList>?> getData() async {
+    var client = http.Client();
+    var url = Uri.parse('https://restcountries.com/v3.1/all');
+
+    var response = await client.get(url);
+
+    if (response.statusCode == 200) {
+      final List json = jsonDecode(response.body);
+      return json.map((e) => CountryList.fromJson(e)).toList();
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+}
